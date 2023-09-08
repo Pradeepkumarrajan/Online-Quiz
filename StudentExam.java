@@ -1,0 +1,432 @@
+
+package onlinequiz;
+
+import java.sql.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.AWTEventListener;
+import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import javax.swing.JOptionPane;
+import javax.swing.Timer;
+import onlinequiz.MyConnnect;
+        
+
+
+
+
+
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
+ */
+
+
+
+/**
+ *
+ * @author user
+ */
+public class StudentExam extends javax.swing.JFrame {
+    public String questionId ="1";
+    public String answer;
+    
+    public int marks =0;
+   
+    
+    public void answerCheck(){
+        String studentAnswer="";
+        if(jRadioButton1.isSelected()){
+            studentAnswer=jRadioButton1.getText();
+        }
+        else if(jRadioButton2.isSelected()){
+            studentAnswer=jRadioButton2.getText();
+        }
+         else if(jRadioButton3.isSelected()){
+            studentAnswer=jRadioButton3.getText();
+        }
+        
+         else{
+             studentAnswer=jRadioButton4.getText();
+         }
+        if(studentAnswer.equals(answer)){
+            marks=marks+1;
+            String marks1=String.valueOf(marks);
+            jLabel16.setText(marks1);
+            
+        }
+        
+        //questionid change
+        int questionId1=Integer.parseInt(questionId);
+        questionId1=questionId1+1;
+        questionId=String.valueOf(questionId1);
+        
+        // clear radiobutton
+        
+        jRadioButton1.setSelected(false);
+        jRadioButton2.setSelected(false);
+        jRadioButton3.setSelected(false);
+        jRadioButton4.setSelected(false);
+        
+        
+        //last question hide next button
+        
+        if(questionId.equals("10")){
+            jButton1.setVisible(false);
+        }
+        }
+    public void question(){
+          PreparedStatement ps;
+        ResultSet rs1;
+        String query = ("select * from `question`where`ID`='"+questionId+"'");
+        
+        try{
+             ps=MyConnnect.getConnect().prepareStatement(query);
+             rs1=ps.executeQuery();
+             while(rs1.next()){
+                jLabel14.setText(rs1.getString(1));
+                jLabel17.setText(rs1.getString(2));
+                jRadioButton1.setText(rs1.getString(3));
+                jRadioButton2.setText(rs1.getString(4));
+                jRadioButton3.setText(rs1.getString(5));
+                jRadioButton4.setText(rs1.getString(6));
+                answer=rs1.getString(7);
+         }
+                      
+    }
+        catch(Exception e){
+            JOptionPane.showMessageDialog(null, e);
+        }
+        
+    }
+    public void submit(){
+        String rollno = jLabel12.getText();
+        answerCheck();
+        PreparedStatement ps;
+        String query = ("update `studentlist` set `mark` = '"+marks+"'where `rollno`='"+rollno+"'");
+        try{
+             ps=MyConnnect.getConnect().prepareStatement(query);
+             String marks1 =String.valueOf(marks);
+             JOptionPane.showMessageDialog(null, marks1);
+            
+        }
+        catch(Exception e){
+            JOptionPane.showMessageDialog(null, e);
+            
+        }
+    }
+    
+
+    /**
+     * Creates new form StudentExam
+     */
+    public StudentExam() {
+        initComponents();
+        
+    }
+    
+    
+     public StudentExam(String rollno) {
+        initComponents();
+        jLabel12.setText(rollno);
+        
+       
+        
+        //First question and student details
+        PreparedStatement ps;
+        ResultSet rs;
+        String query = ("SELECT * FROM `studentlist` WHERE `rollno`='"+rollno+"'");
+        
+        try{
+             ps=MyConnnect.getConnect().prepareStatement(query);
+             rs=ps.executeQuery();
+             while(rs.next()){
+                 
+                jLabel13.setText(rs.getString(2));
+                 
+                 
+             }
+              rs=ps.executeQuery("SELECT * FROM `question` WHERE `ID` = '"+questionId+"'");
+            while(rs.next()){
+                jLabel14.setText(rs.getString(1));
+                jLabel17.setText(rs.getString(2));
+                jRadioButton1.setText(rs.getString(3));
+                jRadioButton2.setText(rs.getString(4));
+                jRadioButton3.setText(rs.getString(5));
+                jRadioButton4.setText(rs.getString(6));
+                answer=rs.getString(7);
+            }
+            
+    }
+        catch(Exception e){
+            JOptionPane.showMessageDialog(null, e);
+        }
+        //time
+     }
+     
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
+        jLabel13 = new javax.swing.JLabel();
+        jLabel14 = new javax.swing.JLabel();
+        jLabel15 = new javax.swing.JLabel();
+        jLabel16 = new javax.swing.JLabel();
+        jSeparator1 = new javax.swing.JSeparator();
+        jLabel17 = new javax.swing.JLabel();
+        jRadioButton1 = new javax.swing.JRadioButton();
+        jRadioButton2 = new javax.swing.JRadioButton();
+        jRadioButton3 = new javax.swing.JRadioButton();
+        jRadioButton4 = new javax.swing.JRadioButton();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/onlinequiz/index student.png"))); // NOI18N
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 14, -1, 49));
+
+        jLabel2.setFont(new java.awt.Font("Algerian", 1, 18)); // NOI18N
+        jLabel2.setText("Welcome");
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(72, 34, 121, 29));
+
+        jPanel1.setBackground(new java.awt.Color(0, 204, 204));
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel7.setText("Roll NO");
+        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 6, 68, -1));
+
+        jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel8.setText("Name");
+        jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 34, -1, -1));
+
+        jLabel10.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel10.setText("Question Number");
+        jPanel1.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 62, -1, -1));
+
+        jLabel9.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel9.setText("Total Question");
+        jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 90, -1, -1));
+
+        jLabel11.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel11.setText("Your Mark");
+        jPanel1.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 118, -1, -1));
+
+        jLabel12.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel12.setText("jLabel12");
+        jPanel1.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(123, 6, -1, -1));
+
+        jLabel13.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel13.setText("jLabel13");
+        jPanel1.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(123, 34, -1, -1));
+
+        jLabel14.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel14.setText("1");
+        jPanel1.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(129, 62, 31, -1));
+
+        jLabel15.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel15.setText("10");
+        jPanel1.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 90, 30, -1));
+
+        jLabel16.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel16.setText("0");
+        jPanel1.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 118, 30, -1));
+
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 76, -1, 410));
+        getContentPane().add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 75, 1057, 10));
+
+        jLabel17.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel17.setText("'Which one of this are not a programming language?'");
+        getContentPane().add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(281, 91, 750, 110));
+
+        jRadioButton1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jRadioButton1.setText("java");
+        jRadioButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadioButton1ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jRadioButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 240, -1, -1));
+
+        jRadioButton2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jRadioButton2.setText("python");
+        jRadioButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadioButton2ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jRadioButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 290, -1, -1));
+
+        jRadioButton3.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jRadioButton3.setText("c#");
+        jRadioButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadioButton3ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jRadioButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 340, -1, -1));
+
+        jRadioButton4.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jRadioButton4.setText("Model");
+        jRadioButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadioButton4ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jRadioButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 380, -1, -1));
+
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/onlinequiz/Next.png"))); // NOI18N
+        jButton1.setText("Next");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(264, 453, -1, -1));
+
+        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/onlinequiz/save.png"))); // NOI18N
+        jButton2.setText("Submit");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 460, -1, -1));
+
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        
+        answerCheck();
+        question();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        
+  int a=  JOptionPane.showConfirmDialog(null, "Do you want to submit","Select",JOptionPane.YES_OPTION);
+        if(a==0){
+            answerCheck();
+            submit();
+        }
+        
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jRadioButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton1ActionPerformed
+        // TODO add your handling code here:
+        if(jRadioButton1.isSelected()){
+            jRadioButton2.setSelected(false);
+            jRadioButton3.setSelected(false);
+            jRadioButton4.setSelected(false);
+        }
+        
+        
+        
+    }//GEN-LAST:event_jRadioButton1ActionPerformed
+
+    private void jRadioButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton3ActionPerformed
+        // TODO add your handling code here:
+         if(jRadioButton2.isSelected()){
+            jRadioButton1.setSelected(false);
+            jRadioButton3.setSelected(false);
+            jRadioButton4.setSelected(false);
+        }
+    }//GEN-LAST:event_jRadioButton3ActionPerformed
+
+    private void jRadioButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton2ActionPerformed
+        // TODO add your handling code here:
+         if(jRadioButton3.isSelected()){
+            jRadioButton1.setSelected(false);
+            jRadioButton2.setSelected(false);
+            jRadioButton4.setSelected(false);
+        }
+    }//GEN-LAST:event_jRadioButton2ActionPerformed
+
+    private void jRadioButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton4ActionPerformed
+        // TODO add your handling code here:
+        
+         if(jRadioButton4.isSelected()){
+            jRadioButton1.setSelected(false);
+            jRadioButton2.setSelected(false);
+            jRadioButton3.setSelected(false);
+        }
+    }//GEN-LAST:event_jRadioButton4ActionPerformed
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(StudentExam.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(StudentExam.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(StudentExam.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(StudentExam.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new StudentExam().setVisible(true);
+            }
+        });
+    }
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JRadioButton jRadioButton1;
+    private javax.swing.JRadioButton jRadioButton2;
+    private javax.swing.JRadioButton jRadioButton3;
+    private javax.swing.JRadioButton jRadioButton4;
+    private javax.swing.JSeparator jSeparator1;
+    // End of variables declaration//GEN-END:variables
+}
